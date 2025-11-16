@@ -1,22 +1,15 @@
 # config_loader.py
-# Responsible for loading application configuration.
-
 import json
+import sys
 
 def load_config(config_path: str) -> dict:
-    """
-    Loads a JSON configuration file.
-    
-    NOTE: Does not handle FileNotFoundError.
-    """
-    with open(config_path, 'r') as f:
-        config = json.load(f)
-    return config
+    try:
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        return config
+    except FileNotFoundError:
+        print(f"Error: Config file not found at {config_path}", file=sys.stderr)
+        sys.exit(1)
 
 def get_setting(config: dict, key: str, default=None):
-    """
-    Retrieves a specific setting from the config dict.
-    
-    NOTE: This is a simple wrapper.
-    """
     return config.get(key, default)
